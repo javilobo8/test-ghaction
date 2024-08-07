@@ -16,7 +16,7 @@ jobs:
       run: exit 1
 
     - name: "Finally?"
-      if: github.ref == 'main'
+      if: github.ref == 'main' && always()
       env:
         JOB_STATUS: ${{ job.status }}
       run: echo "Finally! Status $JOB_STATUS"
