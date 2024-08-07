@@ -1,0 +1,22 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Should fail
+      run: exit 1
+
+    - name: "Finally?"
+      if: github.ref == 'main'
+      env:
+        JOB_STATUS: ${{ job.status }}
+      run: echo "Finally! Status $JOB_STATUS"
