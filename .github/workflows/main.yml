@@ -16,7 +16,7 @@ jobs:
     - name: Should fail
       run: exit 1
 
-    - name: "Finally?"
+    - name: "Finally? master"
       if: always() && github.ref == 'refs/heads/main'
       env:
         JOB_STATUS: ${{ job.status }}
