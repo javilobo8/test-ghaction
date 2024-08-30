@@ -23,7 +23,7 @@ jobs:
       run: echo "Finally! Status $JOB_STATUS"
 
     - name: "Finally? release"
-      if: github.head_ref != 'main' || startsWith(github.ref, 'refs/heads/release/')  # Skip for master => development and release/* => master
+      if: startsWith(github.ref, 'refs/heads/release/')  # Skip for master => development and release/* => master
       env:
         JOB_STATUS: ${{ job.status }}
       run: echo "Finally Release! Status $JOB_STATUS"
