@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - release/*
 
 jobs:
   build:
@@ -20,3 +21,9 @@ jobs:
       env:
         JOB_STATUS: ${{ job.status }}
       run: echo "Finally! Status $JOB_STATUS"
+
+    - name: "Finally? release"
+      if: ${{ github.head_ref != 'master' || startsWith(github.ref, "refs/heads/release/") }}  # Skip for master => development and release/* => master
+      env:
+        JOB_STATUS: ${{ job.status }}
+      run: echo "Finally Release! Status $JOB_STATUS"
