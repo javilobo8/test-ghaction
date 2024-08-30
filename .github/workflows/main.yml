@@ -1,13 +1,12 @@
 name: Test
 
 on:
-  push:
-    branches:
-      - main
-      - release/*
   pull_request:
     branches:
-      - release/*
+      - 'main'
+      - 'development'
+      - '!fix/**'
+    types: [opened, synchronize, edited, reopened, labeled, unlabeled]
 
 jobs:
   build:
