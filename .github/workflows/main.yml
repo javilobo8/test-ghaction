@@ -16,9 +16,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Should fail
-      run: exit 1
-
     - name: "Finally? master"
       if: always() && github.ref == 'refs/heads/main'
       env:
@@ -26,7 +23,7 @@ jobs:
       run: echo "Finally! Status $JOB_STATUS"
 
     - name: "Finally? release"
-      if: github.head_ref != 'master' || startsWith(github.ref, 'refs/heads/release/')  # Skip for master => development and release/* => master
+      if: github.head_ref != 'main' || startsWith(github.ref, 'refs/heads/release/')  # Skip for master => development and release/* => master
       env:
         JOB_STATUS: ${{ job.status }}
       run: echo "Finally Release! Status $JOB_STATUS"
