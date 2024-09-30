@@ -18,6 +18,4 @@ jobs:
     - name: "Finally? release"
       # if: ${{ github.head_ref == 'main' || !startsWith(github.ref, 'refs/heads/release/') }}  # Skip for master => development and release/* => master
       if: ${{ github.base_ref == 'development' && github.head_ref != 'main' }} # Only when target is development and source is not master
-      env:
-        JOB_STATUS: ${{ job.status }}
-      run: echo "Finally Release! Status $JOB_STATUS"
+      run: echo "Echo BASE_REF ${{ github.base_ref }} HEAD_REF ${{ github.head_ref }}"
