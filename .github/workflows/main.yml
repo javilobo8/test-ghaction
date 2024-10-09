@@ -1,24 +1,49 @@
-# name: Test
+name: Test
 
-# on:
-#   pull_request:
-#     branches:
-#       - 'main'
-#       - 'development'
-#       - '!fix/**'
-#     types: [opened, synchronize, edited, reopened, labeled, unlabeled]
+on:
+  push:
+    branches:
+      - 'main'
+    #   - 'development'
+    #   - '!fix/**'
+    # types: [opened, synchronize, edited, reopened, labeled, unlabeled]
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#     steps:
-#     - uses: actions/checkout@v4
+    steps:
+    - uses: actions/checkout@v4
 
-#     - name: "Echo"
-#       run: echo "Echo BASE_REF ${{ github.base_ref }} HEAD_REF ${{ github.head_ref }}"
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v42
+      with:
+        dir_names: true
+        files: 'src/**'
+        files_ignore_separator: ','
+        files_ignore: src/pro/*/terragrunt.hcl,src/squads/*
+        dir_names_max_depth: 4
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-#     - name: "Step run!"
-#       # if: ${{ github.head_ref == 'main' || !startsWith(github.ref, 'refs/heads/release/') }}  # Skip for master => development and release/* => master
-#       if: ${{ github.base_ref == 'development' && github.head_ref != 'main' }} # Only when target is development and source is not master
-#       run: echo "Step run! BASE_REF ${{ github.base_ref }} HEAD_REF ${{ github.head_ref }}"
+    - name: Run step if more than one directory in src/ have been changed
+      if: ${{ steps.changed-files.outputs.all_changed_files_count > 1 }}
+      run: |
+        echo "There are changes in more than one directory in src/ :"
+        echo ${{ steps.changed-files.outputs.all_changed_files }} | tr ' ' '\n'
+        echo "Please, make changes in one directory at a time."
+        exit 1
+
+    - name: Run step if one directory in src/ has been changed
+      if: ${{ steps.changed-files.outputs.all_changed_files_count == 1 }}
+      run: |
+        echo "Changes detected in ${{ steps.changed-files.outputs.all_changed_files }}"
+    
+    - name: Run step if no file(s) in src/ have been changed
+      if: ${{ steps.changed-files.outputs.all_changed_files_count == 0 }}
+      run: |
+        echo "No files in src/ have been changed."
+        exit 0
+
+    - name: Get working directory
+      run: echo "WORKING_DIR=${{ steps.changed-files.outputs.all_changed_files }}" >> $GITHUB_ENV
