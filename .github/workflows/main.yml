@@ -1,24 +1,24 @@
-name: Test
+# name: Test
 
-on:
-  pull_request:
-    branches:
-      - 'main'
-      - 'development'
-      - '!fix/**'
-    types: [opened, synchronize, edited, reopened, labeled, unlabeled]
+# on:
+#   pull_request:
+#     branches:
+#       - 'main'
+#       - 'development'
+#       - '!fix/**'
+#     types: [opened, synchronize, edited, reopened, labeled, unlabeled]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v4
+#     steps:
+#     - uses: actions/checkout@v4
 
-    - name: "Echo"
-      run: echo "Echo BASE_REF ${{ github.base_ref }} HEAD_REF ${{ github.head_ref }}"
+#     - name: "Echo"
+#       run: echo "Echo BASE_REF ${{ github.base_ref }} HEAD_REF ${{ github.head_ref }}"
 
-    - name: "Step run!"
-      # if: ${{ github.head_ref == 'main' || !startsWith(github.ref, 'refs/heads/release/') }}  # Skip for master => development and release/* => master
-      if: ${{ github.base_ref == 'development' && github.head_ref != 'main' }} # Only when target is development and source is not master
-      run: echo "Step run! BASE_REF ${{ github.base_ref }} HEAD_REF ${{ github.head_ref }}"
+#     - name: "Step run!"
+#       # if: ${{ github.head_ref == 'main' || !startsWith(github.ref, 'refs/heads/release/') }}  # Skip for master => development and release/* => master
+#       if: ${{ github.base_ref == 'development' && github.head_ref != 'main' }} # Only when target is development and source is not master
+#       run: echo "Step run! BASE_REF ${{ github.base_ref }} HEAD_REF ${{ github.head_ref }}"
