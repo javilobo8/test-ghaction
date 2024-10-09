@@ -21,10 +21,9 @@ jobs:
       with:
         dir_names: true
         files: 'src/**'
-        files_ignore_separator: ','
         files_ignore: |
           *src/pro/*/terragrunt.hcl
-          *src/squads/**/*
+          *src/squads/**
         dir_names_max_depth: 4
         token: ${{ secrets.GITHUB_TOKEN }}
 
