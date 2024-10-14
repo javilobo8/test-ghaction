@@ -12,5 +12,5 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test
-        if: matches(github.head_ref, 'squad-*/agenda-deploy')
+        if: startsWith(github.head_ref, 'squad-') && endsWith(github.head_ref, '/agenda-deploy')
         run: echo "Running branch name matches"
